@@ -1,5 +1,6 @@
 const guessTheNumber = (function () {
-  const randomNumber = Math.floor(Math.random() * 100 + 1);
+  let randomNumber = Math.floor(Math.random() * 100 + 1);
+  let counter = 10;
   return function game() {
     let guessNumber = prompt("Угадай число от 1 до 100");
 
@@ -10,17 +11,64 @@ const guessTheNumber = (function () {
     let numGuessNumber = +guessNumber;
 
     if (isNaN(numGuessNumber)) {
+      counter--;
       alert("Введи число!");
-      game();
+
+      if (counter === 0) {
+        let attemptsAreOver = confirm("Попытки закончились, хотите сыграть еще?");
+        if (attemptsAreOver) {
+          randomNumber = Math.floor(Math.random() * 100 + 1);
+          counter = 10;
+          game();
+        } else {
+          return;
+        }
+      } else {
+        game();
+      }
     } else if (numGuessNumber > randomNumber) {
-      alert("Загаданное число меньше");
-      game();
+      counter--;
+      alert("Загаданное число меньше, осталось попыток " + counter);
+
+      if (counter === 0) {
+        attemptsAreOver = confirm("Попытки закончились, хотите сыграть еще?");
+        if (attemptsAreOver) {
+          randomNumber = Math.floor(Math.random() * 100 + 1);
+          counter = 10;
+          game();
+        } else {
+          return;
+        }
+      } else {
+        game();
+      }
     } else if (numGuessNumber < randomNumber) {
-      alert("Загаданное число больше");
-      game();
+      counter--;
+      alert("Загаданное число больше, осталось попыток " + counter);
+      if (counter === 0) {
+        attemptsAreOver = confirm("Попытки закончились, хотите сыграть еще?");
+        if (attemptsAreOver) {
+          randomNumber = Math.floor(Math.random() * 100 + 1);
+          counter = 10;
+          game();
+        } else {
+          return;
+        }
+      } else {
+        game();
+      }
     } else if (numGuessNumber === randomNumber) {
       alert("Поздравляю, Вы угадали!!!");
-      return;
+
+      let playAgain = confirm("Хотите сыграть еще?");
+
+      if (playAgain) {
+        randomNumber = Math.floor(Math.random() * 100 + 1);
+        counter = 10;
+        game();
+      } else {
+        return;
+      }
     }
   };
 })();
